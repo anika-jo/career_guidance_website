@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply selection:bg-primary/30;
+  }
+}
+
+.glass-morphism {
+  @apply bg-glass-gradient backdrop-blur-xl border border-white/10 shadow-glass;
+}
+
+.text-gradient {
+  @apply bg-gradient-to-r from-primary via-accent-purple to-accent-blue bg-clip-text text-transparent;
+}
