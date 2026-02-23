@@ -3,14 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Send } from 'lucide-react';
 import { GlassCard } from '../components/ui/GlassCard';
-import { useAuth } from '../context/AuthContext';
 import { useNotifications } from '../context/NotificationContext';
 
 const QUESTIONS = [
     {
         id: 1,
         text: "Which environment draws you in the most?",
-        options: ["Building digital solutions", "Creative visual design", "leading high-impact teams", "Analyzing complex data"]
+        options: ["Building digital solutions", "Creative visual design", "Leading high-impact teams", "Analyzing complex data"]
     },
     {
         id: 2,
@@ -23,7 +22,6 @@ export default function Quiz() {
     const [step, setStep] = useState(0);
     const [answers, setAnswers] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const { updateProfile } = useAuth();
     const { showNotification } = useNotifications();
     const navigate = useNavigate();
 
@@ -36,13 +34,44 @@ export default function Quiz() {
 
     const handleSubmit = async () => {
         setIsSubmitting(true);
+        const token = localStorage.getItem('token'); // Retrieve the JWT stored during login
+
         try {
-            // In a real app, you'd calculate scoring here or send raw answers
-            await updateProfile({ quizResults: answers, quizCompleted: true });
-            showNotification("Assessment complete! Here are your recommended paths.", "success");
+            // 1. Convert answers object to an array for the backend
+            const selectedSkills = Object.values(answers);
+
+            // 2. Get recommendations from Postgres via the Career Controller
+            const recResponse = await fetch('http://localhost:8000/api/careers/recommend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ userSkills: selectedSkills })
+            });
+
+            if (!recResponse.ok) throw new Error("Failed to fetch matches");
+            const recommendations = await recResponse.json();
+
+            // 3. Save the results to the quiz_results table
+            const saveResponse = await fetch('http://localhost:8000/api/quiz/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    score: recommendations[0]?.match_percentage || 0,
+                    recommendations: recommendations // This saves the full objects to JSONB
+                })
+            });
+
+            if (!saveResponse.ok) throw new Error("Failed to save result to database");
+
+            showNotification("Assessment complete! Your career paths are ready.", "success");
             navigate('/career');
         } catch (error) {
-            showNotification(error.message || "Could not save results.", "error");
+            showNotification(error.message || "Could not connect to the server.", "error");
         } finally {
             setIsSubmitting(false);
         }
@@ -103,7 +132,7 @@ export default function Quiz() {
                             {step === QUESTIONS.length - 1 ? (
                                 <button
                                     onClick={handleSubmit}
-                                    disabled={isSubmitting}
+                                    disabled={isSubmitting || !answers[step]}
                                     className="flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-primary to-accent-purple text-white font-bold hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all disabled:opacity-50"
                                 >
                                     {isSubmitting ? 'Analyzing...' : 'Analyze Results'}
