@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const { getUserProfile } = require("../controllers/profileController");
 const authMiddleware = require("../middleware/authMiddleware");
-const { getProfile } = require("../controllers/profileController");
 
-router.get("/profile", authMiddleware, getProfile);
+// GET /api/profile/me - Protected by JWT auth
+router.get("/me", authMiddleware, getUserProfile);
 
 module.exports = router;
