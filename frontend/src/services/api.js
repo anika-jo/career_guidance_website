@@ -1,13 +1,18 @@
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = 'http://localhost:8000/api';
 
 const handleResponse = async (response) => {
     if (!response.ok) {
-        if (response.status === 401) {
+        // Clear token if unauthorized (401) or forbidden (403)
+        if (response.status === 401 || response.status === 403) {
+            console.warn("Auth Error: Clearing token and redirecting.");
             localStorage.removeItem('token');
-            window.location.href = '/login';
+            // Only redirect if we aren't already on the login page
+            if (!window.location.pathname.includes('/login')) {
+                window.location.href = '/login';
+            }
         }
-        const error = await response.json();
-        throw new Error(error.message || 'Something went wrong');
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.message || `Error: ${response.status}`);
     }
     return response.json();
 };

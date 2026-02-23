@@ -37,33 +37,45 @@ exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const user = await pool.query(
+        const result = await pool.query(
             "SELECT * FROM users WHERE email=$1",
             [email]
         );
 
-        if (user.rows.length === 0) {
+        if (result.rows.length === 0) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
+        const user = result.rows[0];
+
         const validPassword = await bcrypt.compare(
             password,
-            user.rows[0].password
+            user.password
         );
+        // console.log("Password Match Result:", validPassword); // DEBUG LOG 1
+
 
         if (!validPassword) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
+        // console.log("JWT Secret being used:", process.env.JWT_SECRET); // DEBUG LOG 2
+
         const token = jwt.sign(
-            { id: user.rows[0].id },
+            { id: user.id },
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
         );
 
+        // UPDATED: Now sending the user object along with the token
         res.json({
             message: "Login successful",
             token,
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email
+            }
         });
     } catch (error) {
         res.status(500).json({ error: error.message });

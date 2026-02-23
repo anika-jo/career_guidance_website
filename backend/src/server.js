@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+
 // 1. Route Imports
 const authRoutes = require("./routes/authRoutes");
 const quizRoutes = require("./routes/quizRoutes");

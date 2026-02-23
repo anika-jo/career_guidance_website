@@ -1,10 +1,8 @@
 const pool = require("../config/db");
-
 exports.getUserProfile = async (req, res) => {
     try {
-        const userId = req.user.id; // Extracted from JWT by authMiddleware
+        const userId = req.user.id;
 
-        // Fetch user info and their latest quiz results in one go
         const userQuery = `
             SELECT u.name, u.email, q.score, q.recommendations, q.created_at
             FROM users u
@@ -14,15 +12,27 @@ exports.getUserProfile = async (req, res) => {
             LIMIT 1;
         `;
 
-        const user = await pool.query(userQuery, [userId]);
+        const result = await pool.query(userQuery, [userId]);
 
-        if (user.rows.length === 0) {
+        if (result.rows.length === 0) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        res.json(user.rows[0]);
+        const userData = result.rows[0];
+
+        // We package the data so 'name' is always at the top level
+        res.json({
+            id: userId,
+            name: userData.name,
+            email: userData.email,
+            quizData: userData.score ? {
+                score: userData.score,
+                recommendations: userData.recommendations,
+                date: userData.created_at
+            } : null
+        });
     } catch (error) {
-        console.error(error.message);
+        console.error("Profile Controller Error:", error.message);
         res.status(500).json({ message: "Server Error" });
     }
 };

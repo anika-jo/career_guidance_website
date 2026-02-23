@@ -30,58 +30,49 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-6">
+        <div className="min-h-screen bg-white flex items-center justify-center px-6">
             <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="w-full max-w-md p-10 bg-slate-50 border border-slate-100 rounded-[2rem] shadow-soft"
             >
-                <GlassCard className="w-full max-w-md p-10">
-                    <div className="flex flex-col items-center mb-10">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-accent-purple flex items-center justify-center mb-4 shadow-lg shadow-primary/20">
-                            <Compass className="w-6 h-6 text-white" />
-                        </div>
-                        <h1 className="text-3xl font-display font-bold text-white">Welcome Back</h1>
-                        <p className="text-slate-500 text-sm mt-2">Sign in to your career journey</p>
+                <div className="flex flex-col items-center mb-10">
+                    {/* Updated Icon Gradient */}
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-accent-violet flex items-center justify-center mb-4 shadow-xl shadow-primary/20">
+                        <Compass className="w-7 h-7 text-white" />
                     </div>
+                    {/* Updated Text Colors for Visibility */}
+                    <h1 className="text-3xl font-display font-bold text-slate-900">Welcome Back</h1>
+                    <p className="text-slate-500 text-sm mt-2">Sign in to your career journey</p>
+                </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <Input
-                            label="Email Address"
-                            type="email"
-                            placeholder="name@example.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <Input
-                            label="Password"
-                            type="password"
-                            placeholder="••••••••"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    <Input
+                        label="Email Address"
+                        // These labels in your Input component should now be text-slate-700
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Input
+                        label="Password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
 
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="w-full py-4 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {isSubmitting ? 'Signing In...' : (
-                                <>
-                                    Sign In
-                                    <ArrowRight className="w-4 h-4" />
-                                </>
-                            )}
-                        </button>
-                    </form>
+                    <button
+                        type="submit"
+                        className="w-full py-4 rounded-xl bg-gradient-to-r from-primary to-accent-violet hover:opacity-90 text-white font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/25"
+                    >
+                        {isSubmitting ? 'Signing In...' : 'Sign In'}
+                        <ArrowRight className="w-4 h-4" />
+                    </button>
+                </form>
 
-                    <p className="text-center text-slate-500 text-sm mt-8">
-                        Don't have an account?{' '}
-                        <Link to="/signup" className="text-primary font-semibold hover:underline">Create one</Link>
-                    </p>
-                </GlassCard>
+                <p className="text-center text-slate-500 text-sm mt-8">
+                    Don't have an account?{' '}
+                    <Link to="/signup" className="text-primary font-bold hover:text-accent-violet transition-colors">Create one</Link>
+                </p>
             </motion.div>
         </div>
     );

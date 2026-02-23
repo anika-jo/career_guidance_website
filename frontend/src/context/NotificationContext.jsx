@@ -38,24 +38,45 @@ export function NotificationProvider({ children }) {
 }
 
 function NotificationItem({ notification, onClose }) {
-    const icons = {
-        success: <CheckCircle className="w-5 h-5 text-green-400" />,
-        error: <AlertCircle className="w-5 h-5 text-red-400" />,
-        info: <Info className="w-5 h-5 text-primary" />
+    // 1. Define theme colors based on type
+    const themes = {
+        success: {
+            container: "bg-green-50 border-green-500 text-green-900",
+            icon: <CheckCircle className="w-5 h-5 text-green-600" />,
+            close: "text-green-500 hover:text-green-700"
+        },
+        error: {
+            container: "bg-red-50 border-red-500 text-red-900",
+            icon: <AlertCircle className="w-5 h-5 text-red-600" />,
+            close: "text-red-500 hover:text-red-700"
+        },
+        info: {
+            container: "bg-blue-50 border-primary text-blue-900",
+            icon: <Info className="w-5 h-5 text-primary" />,
+            close: "text-blue-500 hover:text-blue-700"
+        }
     };
+
+    const currentTheme = themes[notification.type] || themes.info;
 
     return (
         <motion.div
             initial={{ opacity: 0, x: 20, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-            className="pointer-events-auto w-80 glass-morphism p-4 rounded-2xl flex gap-3 items-start border-white/10 shadow-2xl"
+            exit={{ opacity: 0, scale: 0.9 }}
+            // 2. Swapped glass-morphism for the theme container
+            className={`pointer-events-auto w-80 p-4 rounded-xl border-l-4 shadow-lg flex gap-3 items-start ${currentTheme.container}`}
         >
-            <div className="mt-0.5">{icons[notification.type]}</div>
-            <p className="text-sm text-slate-200 flex-grow font-medium leading-relaxed">{notification.message}</p>
+            <div className="mt-0.5">{currentTheme.icon}</div>
+
+            {/* 3. Text color is now dark and visible */}
+            <p className="text-sm flex-grow font-semibold leading-relaxed">
+                {notification.message}
+            </p>
+
             <button
                 onClick={onClose}
-                className="text-slate-500 hover:text-white transition-colors"
+                className={`transition-colors ${currentTheme.close}`}
             >
                 <X className="w-4 h-4" />
             </button>

@@ -31,65 +31,68 @@ export default function Signup() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-6">
+        <div className="min-h-screen bg-white flex items-center justify-center px-6">
             <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="w-full max-w-md p-10 bg-slate-50 border border-slate-100 rounded-[2rem] shadow-soft"
             >
-                <GlassCard className="w-full max-w-md p-10">
-                    <div className="flex flex-col items-center mb-10">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-accent-purple flex items-center justify-center mb-4 shadow-lg shadow-primary/20">
-                            <Compass className="w-6 h-6 text-white" />
-                        </div>
-                        <h1 className="text-3xl font-display font-bold text-white">Get Started</h1>
-                        <p className="text-slate-500 text-sm mt-2">Begin your personalized career journey</p>
+                <div className="flex flex-col items-center mb-10">
+                    {/* Icon with Blue-to-Violet Gradient */}
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-accent-violet flex items-center justify-center mb-4 shadow-xl shadow-primary/20">
+                        <User className="w-7 h-7 text-white" />
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <Input
-                            label="Full Name"
-                            placeholder="John Doe"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                        <Input
-                            label="Email Address"
-                            type="email"
-                            placeholder="name@example.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <Input
-                            label="Password"
-                            type="password"
-                            placeholder="••••••••"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+                    {/* Visible Dark Text */}
+                    <h1 className="text-3xl font-display font-bold text-slate-900">Get Started</h1>
+                    <p className="text-slate-500 text-sm mt-2">Begin your personalized career journey</p>
+                </div>
 
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="w-full py-4 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {isSubmitting ? 'Creating Account...' : (
-                                <>
-                                    Start My Journey
-                                    <ArrowRight className="w-4 h-4" />
-                                </>
-                            )}
-                        </button>
-                    </form>
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    <Input
+                        label="Full Name"
+                        placeholder="John Doe"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                    />
+                    <Input
+                        label="Email Address"
+                        type="email"
+                        placeholder="name@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    <Input
+                        label="Password"
+                        type="password"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
 
-                    <p className="text-center text-slate-500 text-sm mt-8">
-                        Already have an account?{' '}
-                        <Link to="/login" className="text-primary font-semibold hover:underline">Sign In</Link>
-                    </p>
-                </GlassCard>
+                    <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full py-4 rounded-xl bg-gradient-to-r from-primary to-accent-violet hover:opacity-90 text-white font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/25 disabled:opacity-50"
+                    >
+                        {isSubmitting ? 'Creating Account...' : (
+                            <>
+                                Start My Journey
+                                <ArrowRight className="w-4 h-4" />
+                            </>
+                        )}
+                    </button>
+                </form>
+
+                <p className="text-center text-slate-500 text-sm mt-8">
+                    Already have an account?{' '}
+                    <Link to="/login" className="text-primary font-bold hover:text-accent-violet transition-colors">
+                        Sign In
+                    </Link>
+                </p>
             </motion.div>
         </div>
     );

@@ -3,13 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Compass } from 'lucide-react';
 
 const QUOTES = [
-    "Choose a job you love, and you will never have to work a day in your life.",
-    "The only way to do great work is to love what you do.",
-    "Opportunities don't happen, you create them.",
-    "Success is not final; failure is not fatal: it is the courage to continue that counts.",
-    "The future depends on what you do today.",
-    "Believe you can and you're halfway there.",
-    "Your career is your storyboard; write a masterpiece."
+    "Random text"
 ];
 
 const containerVariants = {

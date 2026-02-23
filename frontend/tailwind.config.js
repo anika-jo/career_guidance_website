@@ -11,22 +11,24 @@ export default {
                 display: ['Outfit', 'sans-serif'],
             },
             colors: {
-                background: '#020617',
+                // CHANGED: Background is now white
+                background: '#ffffff',
+                // CHANGED: Primary is now a crisp Blue
                 primary: {
-                    DEFAULT: '#6366f1',
-                    hover: '#4f46e5',
+                    DEFAULT: '#3b82f6',
+                    hover: '#2563eb',
                 },
+                // UPDATED: Modern Violet/Blue palette
                 accent: {
-                    purple: '#a855f7',
-                    pink: '#ec4899',
-                    blue: '#3b82f6',
+                    violet: '#8b5cf6',
+                    blue: '#60a5fa',
+                    slate: '#f8fafc', // Great for light card backgrounds
                 }
             },
-            backgroundImage: {
-                'glass-gradient': 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
-            },
             boxShadow: {
-                'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+                // UPDATED: Subtle shadow for white theme (not the heavy dark glass)
+                'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                'border': '0 0 0 1px rgba(0, 0, 0, 0.05)',
             }
         },
     },

@@ -8,10 +8,12 @@
   }
 }
 
-.glass-morphism {
-  @apply bg-glass-gradient backdrop-blur-xl border border-white/10 shadow-glass;
+/* Updated for the new Blue/Violet theme */
+.text-gradient {
+  @apply bg-gradient-to-r from-primary via-accent-violet to-accent-blue bg-clip-text text-transparent;
 }
 
-.text-gradient {
-  @apply bg-gradient-to-r from-primary via-accent-purple to-accent-blue bg-clip-text text-transparent;
+/* Updated for White/Violet theme */
+.glass-morphism {
+  @apply bg-white/80 backdrop-blur-md border border-slate-200 shadow-soft;
 }
