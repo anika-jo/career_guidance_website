@@ -6,6 +6,8 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [viewMode, setViewMode] = useState('student');
+
 
     // Load user from backend on init if token exists
     useEffect(() => {
@@ -57,9 +59,15 @@ export function AuthProvider({ children }) {
     };
 
     const updateProfile = async (updates) => {
-        const updatedUser = await api.post('/profile', updates);
-        setUser(updatedUser);
-        return updatedUser;
+        try {
+            const response = await api.post('/profile/update', updates);
+            // Your custom API wrapper should return the unwrapped JSON
+            setUser(response);
+            return response;
+        } catch (error) {
+            console.error("Profile update failed:", error);
+            throw error;
+        }
     };
 
     // This prevents children (Navbar, Dashboard) from loading until we know who the user is
@@ -72,7 +80,7 @@ export function AuthProvider({ children }) {
     }
 
     return (
-        <AuthContext.Provider value={{ user, login, signup, logout, updateProfile, loading }}>
+        <AuthContext.Provider value={{ user, login, signup, logout, updateProfile, viewMode, setViewMode, loading }}>
             {children}
         </AuthContext.Provider>
     );

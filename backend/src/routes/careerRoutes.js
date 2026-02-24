@@ -1,9 +1,10 @@
-const express = require("express");
+// backend/src/routes/careerRoutes.js
+const express = require('express');
 const router = express.Router();
-const { getRecommendations } = require("../controllers/careerController");
-const authMiddleware = require("../middleware/authMiddleware");
+const careerController = require('../controllers/careerController');
+const authMiddleware = require('../middleware/authMiddleware');
 
-// Route to get career matches based on skills
-router.post("/recommend", authMiddleware, getRecommendations);
+router.post('/recommend', authMiddleware, careerController.getRecommendations);
+router.get('/:id/roadmap', authMiddleware, careerController.getRoadmap);
 
 module.exports = router;

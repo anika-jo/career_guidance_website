@@ -18,7 +18,7 @@ export default function Signup() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsSubmitting(true);
+        setIsSubmitting(true);i
         try {
             await signup(name, email, password);
             showNotification("Account created successfully! Welcome to North Star.", "success");
